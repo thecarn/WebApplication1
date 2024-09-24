@@ -2,7 +2,72 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Data;
 
+/*
+ 
+transient is good if you need something new or timestamped
 
+
+
+sometimes you want to limit the number of connections to a service,
+    - need a rabbitmq instance, but only 1 connection at a time therefore use a singleton
+
+    orms
+ npoco
+ dapper
+
+factory pattern
+
+
+mvc isnt completely like react
+    - view data
+    - view bag
+    - temp data
+
+null checking
+    gaurd clauses
+
+    null coelessing ?? and ??=
+        -check for null and assign at the same time
+
+FromQuery, FromBody, newtonsoftjson
+
+HTTP methods
+
+overloading, different ways to call same function
+    jsonpropertyname("name")
+
+dont want to use frombody in a get request
+
+can change request body values in immediate window in IDE
+    can drag arrow to reverse time in the same context of the current block
+
+
+NULL HANDELING IS IMPORTANT FOR THESE TWO 
+CREATED DATE
+UPDATED DATE
+
+
+internal vs private
+
+partial classes, can create a class in two places
+    -
+ 
+fields vs properties
+
+ should seperate request models from entity models 
+
+stripe 
+
+
+how to use the route, or how to get info from the body to breakpoint into it to access the data that was provdided and display it
+
+how to do this joson stuff with it, serialization/deserialization and making sure it shows on the page
+
+how to get a request object into code
+
+parameterless constructor
+
+ */
 
 
 var builder = WebApplication.CreateBuilder(args);
