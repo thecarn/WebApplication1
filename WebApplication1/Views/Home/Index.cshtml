@@ -1,6 +1,9 @@
-﻿@{
-    var name = "Ramir";
+﻿
+@{
 
+
+    var name = "Ramir";
+    var pokemon = ViewData["pokemon"] ?? "No Pokemon";
     void ChangeName(string n)
     {
         name = n;
@@ -12,7 +15,7 @@
     <p>Account Status: @ViewData["IsPremiumUser"]</p>
     <h1 class="display-4">Welcome</h1>
     <p>
-        @ViewData["pokemon"]
+        @pokemon
     </p>
     @if (true)
     {

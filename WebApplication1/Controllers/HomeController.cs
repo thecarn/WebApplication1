@@ -5,6 +5,8 @@ using WebApplication1.Models;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebApplication1.Models.Requests;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 
 namespace WebApplication1.Controllers
 {
@@ -30,7 +32,14 @@ namespace WebApplication1.Controllers
             text = text ?? "Home";
             ViewData["Title"] = text;
             ViewData["IsPremiumUser"] = premiumUsers.Contains(text) ? "PREMIUM SUB" : "BROKE BOY";
-            ViewData["pokemon"] = pokemonDb.FirstOrDefault();
+            var pokemon = pokemonDb.FirstOrDefault() ?? "";
+            if (pokemon.IsNullOrEmpty())
+            {
+                return View();
+            }
+            JObject pokemonObj = JObject.Parse(pokemon);
+
+            ViewData["pokemon"] = pokemonObj["Name"];
             return View();
         }
 
@@ -39,7 +48,6 @@ namespace WebApplication1.Controllers
         public IActionResult Index([FromBody] PokemonRequest pokemon)
         {
             var name = pokemon.Name;    // -> get{ ... } is called here
-            pokemon.Name = "eevee";
             var pokemonText = JsonConvert.SerializeObject(pokemon);
             pokemonDb = pokemonDb.Append(pokemonText);
             return View();
