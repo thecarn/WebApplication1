@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplication.DataAccess.Data;
 using Microsoft.AspNetCore.Builder;
+using WebApplication.DataAccess.Repository.IRepository;
+using WebApplication.DataAccess.Repository;
 /*
  
 transient is good if you need something new or timestamped
@@ -80,6 +82,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+//if we dont load our repo service into the DI container, then we will be presented with an exception
+//invalidoperationexception, unable to resolve service for type webapplication.dataccess.repoisitory.irepository.icategoryrepository
+//while attempting to activate webapplication.cointrollers.categorycontreoller
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 
 var app = builder.Build();
 

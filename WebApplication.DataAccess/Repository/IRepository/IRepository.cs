@@ -9,9 +9,10 @@ namespace WebApplication.DataAccess.Repository.IRepository
 {
     //typically, when we are working with generic interface where we do not know what the class type
     //will be we say it will be a generic type <T> ......
-    internal interface IRepository<T> where T : class
+    public interface IRepository<T> where T : class
     {
         //T - Category
+        IEnumerable<T> GetAll();
         T Get(Expression<Func<T, bool>> filter);
         void Add(T entity);
         

@@ -1,19 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication.DataAccess.Data;
 using WebApplication.Models.Models;
+using WebApplication.DataAccess.Repository.IRepository;
+using WebApplication.DataAccess.Repository;
 
 namespace WebApplication1.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        private readonly ICategoryRepository _categoryRepo;
+        public CategoryController(ICategoryRepository categoryRepo)
         { 
-            _db = db;
+            _categoryRepo = categoryRepo;
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _db.Categories.ToList();
+            List<Category> objCategoryList = _categoryRepo.GetAll().ToList();
             return View(objCategoryList);
         }
         public IActionResult Create()
@@ -30,8 +32,8 @@ namespace WebApplication1.Controllers
             //}
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(obj);
-                _db.SaveChanges();
+                _categoryRepo.Add(obj);
+                _categoryRepo.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction(nameof(Index), nameof(Category));
             }
@@ -46,9 +48,9 @@ namespace WebApplication1.Controllers
             }
             //ACCEPTABLE
             //Category? categoryFromDb = _db.Categories.Find(id);
-            
+
             //OPTIMAL FOR MOST CASE
-            Category? categoryFromDb = _db.Categories.FirstOrDefault(u=>u.Id==id);
+            Category? categoryFromDb = _categoryRepo.Get(u=>id==u.Id);
             
             // USE THIS WHEN LOTS OF FILTERING IS NEEDED
             //Category? categoryFromDb2 = _db.Categories.Where(u => u.Id == id).FirstOrDefault();
@@ -65,8 +67,8 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(obj);
-                _db.SaveChanges();
+                _categoryRepo.Update(obj);
+                _categoryRepo.Save();
                 TempData["success"] = "Category updated successfully";
                 ViewData["buccess"] = "wasup fellas, Im bouta get erased :(";
             
@@ -83,7 +85,7 @@ namespace WebApplication1.Controllers
                 return NotFound();
             }
 
-            Category? categoryFromDb = _db.Categories.FirstOrDefault(u => u.Id == id);
+            Category? categoryFromDb = _categoryRepo.Get(u => id == u.Id);
 
             if (categoryFromDb == null)
             {
@@ -95,13 +97,13 @@ namespace WebApplication1.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? obj = _db.Categories.Find(id);
-            if(obj == null)
+            Category? obj = _categoryRepo.Get(u => id == u.Id);
+            if (obj == null)
             {
                 return NotFound();
             }
-            _db.Categories.Remove(obj);
-            _db.SaveChanges();
+            _categoryRepo.Remove(obj);
+            _categoryRepo.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction(nameof(Index));
         }
