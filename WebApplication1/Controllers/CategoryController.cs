@@ -68,6 +68,9 @@ namespace WebApplication1.Controllers
                 _db.Categories.Update(obj);
                 _db.SaveChanges();
                 TempData["success"] = "Category updated successfully";
+                ViewData["buccess"] = "wasup fellas, Im bouta get erased :(";
+            
+                //redirect creates a new request so viewdata will get erased 
                 return RedirectToAction(nameof(Index), nameof(Category));
             }
             return View();
