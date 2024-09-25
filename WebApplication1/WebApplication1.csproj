@@ -15,4 +15,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebApplication.DataAccess\WebApplication.DataAccess.csproj" />
+    <ProjectReference Include="..\WebApplication.Models\WebApplication.Models.csproj" />
+    <ProjectReference Include="..\WebApplication.Utility\WebApplication.Utility.csproj" />
+  </ItemGroup>
+
 </Project>

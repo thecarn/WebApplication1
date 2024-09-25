@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.Data;
-
+using WebApplication.DataAccess.Data;
+using Microsoft.AspNetCore.Builder;
 /*
  
 transient is good if you need something new or timestamped
@@ -69,8 +69,7 @@ parameterless constructor
 
  */
 
-
-var builder = WebApplication.CreateBuilder(args);
+var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");

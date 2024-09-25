@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApplication1.Models;
+using WebApplication.Models.Models;
 
-namespace WebApplication1.Data
+namespace WebApplication.DataAccess.Data
 {
     public class ApplicationDbContext : DbContext
     {
