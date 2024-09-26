@@ -8,14 +8,14 @@ namespace WebApplication1.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _categoryRepo;
-        public CategoryController(ICategoryRepository categoryRepo)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         { 
-            _categoryRepo = categoryRepo;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _categoryRepo.GetAll().ToList();
+            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
             return View(objCategoryList);
         }
         public IActionResult Create()
@@ -32,8 +32,8 @@ namespace WebApplication1.Controllers
             //}
             if (ModelState.IsValid)
             {
-                _categoryRepo.Add(obj);
-                _categoryRepo.Save();
+                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction(nameof(Index), nameof(Category));
             }
@@ -50,7 +50,7 @@ namespace WebApplication1.Controllers
             //Category? categoryFromDb = _db.Categories.Find(id);
 
             //OPTIMAL FOR MOST CASE
-            Category? categoryFromDb = _categoryRepo.Get(u=>id==u.Id);
+            Category? categoryFromDb = _unitOfWork.Category.Get(u=>id==u.Id);
             
             // USE THIS WHEN LOTS OF FILTERING IS NEEDED
             //Category? categoryFromDb2 = _db.Categories.Where(u => u.Id == id).FirstOrDefault();
@@ -67,8 +67,8 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _categoryRepo.Update(obj);
-                _categoryRepo.Save();
+                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category updated successfully";
                 ViewData["buccess"] = "wasup fellas, Im bouta get erased :(";
             
@@ -85,7 +85,7 @@ namespace WebApplication1.Controllers
                 return NotFound();
             }
 
-            Category? categoryFromDb = _categoryRepo.Get(u => id == u.Id);
+            Category? categoryFromDb = _unitOfWork.Category.Get(u => id == u.Id);
 
             if (categoryFromDb == null)
             {
@@ -97,13 +97,14 @@ namespace WebApplication1.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? obj = _categoryRepo.Get(u => id == u.Id);
+            Category? obj = _unitOfWork.Category.Get(u => id == u.Id);
             if (obj == null)
             {
                 return NotFound();
             }
-            _categoryRepo.Remove(obj);
-            _categoryRepo.Save();
+            
+            _unitOfWork.Category.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction(nameof(Index));
         }

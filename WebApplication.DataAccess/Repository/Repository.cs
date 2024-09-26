@@ -38,7 +38,6 @@ namespace WebApplication.DataAccess.Repository
         {
             IQueryable<T> query = dbSet;
             return query.ToList();
-
         }
 
         public void Remove(T entity)
