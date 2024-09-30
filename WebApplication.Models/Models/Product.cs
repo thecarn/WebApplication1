@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApplication.Models
+namespace WebApplication.Models.Models
 {
     public class Product
     {
@@ -16,9 +16,9 @@ namespace WebApplication.Models
         public string Title { get; set; }
         public string Description { get; set; }
         [Required]
-        public string ISBN  { get; set; }
+        public string ISBN { get; set; }
         [Required]
-        public string Author { get; set; } 
+        public string Author { get; set; }
 
         [Required]
         [Display(Name = "List Price")]
