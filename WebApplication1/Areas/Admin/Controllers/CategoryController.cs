@@ -16,7 +16,7 @@ namespace WebApplication1.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
+            List<Category> objCategoryList = _unitOfWork.Category.GetAll().OrderBy(u => u.DisplayOrder).ToList();
             return View(objCategoryList);
         }
         public IActionResult Create()
