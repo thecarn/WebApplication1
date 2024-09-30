@@ -4,13 +4,14 @@ using WebApplication.Models.Models;
 using WebApplication.DataAccess.Repository.IRepository;
 using WebApplication.DataAccess.Repository;
 
-namespace WebApplication1.Controllers
+namespace WebApplication1.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         public CategoryController(IUnitOfWork unitOfWork)
-        { 
+        {
             _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
@@ -50,11 +51,11 @@ namespace WebApplication1.Controllers
             //Category? categoryFromDb = _db.Categories.Find(id);
 
             //OPTIMAL FOR MOST CASE
-            Category? categoryFromDb = _unitOfWork.Category.Get(u=>id==u.Id);
-            
+            Category? categoryFromDb = _unitOfWork.Category.Get(u => id == u.Id);
+
             // USE THIS WHEN LOTS OF FILTERING IS NEEDED
             //Category? categoryFromDb2 = _db.Categories.Where(u => u.Id == id).FirstOrDefault();
-            
+
             if (categoryFromDb == null)
             {
                 return NotFound();
@@ -71,7 +72,7 @@ namespace WebApplication1.Controllers
                 _unitOfWork.Save();
                 TempData["success"] = "Category updated successfully";
                 ViewData["buccess"] = "wasup fellas, Im bouta get erased :(";
-            
+
                 //redirect creates a new request so viewdata will get erased 
                 return RedirectToAction(nameof(Index), nameof(Category));
             }
@@ -102,7 +103,7 @@ namespace WebApplication1.Controllers
             {
                 return NotFound();
             }
-            
+
             _unitOfWork.Category.Remove(obj);
             _unitOfWork.Save();
             TempData["success"] = "Category deleted successfully";
