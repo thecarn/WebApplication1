@@ -14,12 +14,29 @@ namespace WebApplication1.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> objProductList = _unitOfWork.Product.GetAll().OrderBy(u => u.Id).ToList();
+            List<Product> objProductList = _unitOfWork.Product.GetAll().OrderBy(u => u.ListPrice).ToList();
             return View(objProductList);
         }
 
         public IActionResult Create()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Product obj)
+        {
+            //if(obj.Name == obj.DisplayOrder.ToString())
+            //{
+            //    ModelState.AddModelError("Name", "The DisplayOrder cannot exactly match the Name.");
+            //}
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Product.Add(obj);
+                _unitOfWork.Save();
+                TempData["success"] = "Product created successfully";
+                return RedirectToAction(nameof(Index), nameof(Product));
+            }
             return View();
         }
 
