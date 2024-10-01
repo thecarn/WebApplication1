@@ -16,9 +16,10 @@ namespace WebApplication.DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Action", DisplayOrder = 1},
-                new Category { Id = 2, Name = "Scifi", DisplayOrder = 2 },
-                new Category { Id = 3, Name = "History", DisplayOrder = 3 }
+                new Category { CategoryId = 1, Name = "Action", DisplayOrder = 1},
+                new Category { CategoryId = 2, Name = "Scifi", DisplayOrder = 2 },
+                new Category { CategoryId = 3, Name = "History", DisplayOrder = 3 },
+                new Category { CategoryId = 4, Name = "Horror", DisplayOrder = 4 }
                 );
 
             modelBuilder.Entity<Product>().HasData(
@@ -32,7 +33,8 @@ namespace WebApplication.DataAccess.Data
                         ListPrice = 99,
                         Price = 90,
                         Price50 = 85,
-                        Price100 = 80
+                        Price100 = 80,
+                        CategoryId = 1
                     },
                     new Product
                     {
@@ -44,7 +46,8 @@ namespace WebApplication.DataAccess.Data
                         ListPrice = 105,
                         Price = 95,
                         Price50 = 90,
-                        Price100 = 85
+                        Price100 = 85,
+                        CategoryId = 1
                     },
                     new Product
                     {
@@ -56,7 +59,8 @@ namespace WebApplication.DataAccess.Data
                         ListPrice = 120,
                         Price = 110,
                         Price50 = 105,
-                        Price100 = 100
+                        Price100 = 100,
+                        CategoryId = 1
                     },
                     new Product
                     {
@@ -68,7 +72,8 @@ namespace WebApplication.DataAccess.Data
                         ListPrice = 115,
                         Price = 105,
                         Price50 = 100,
-                        Price100 = 95
+                        Price100 = 95,
+                        CategoryId = 2
                     },
                     new Product
                     {
@@ -80,7 +85,8 @@ namespace WebApplication.DataAccess.Data
                         ListPrice = 98,
                         Price = 88,
                         Price50 = 83,
-                        Price100 = 78
+                        Price100 = 78,
+                        CategoryId = 4
                     },
                     new Product
                     {
@@ -92,7 +98,8 @@ namespace WebApplication.DataAccess.Data
                         ListPrice = 125,
                         Price = 115,
                         Price50 = 110,
-                        Price100 = 105
+                        Price100 = 105,
+                        CategoryId = 4
                     },
                     new Product
                     {
@@ -104,7 +111,8 @@ namespace WebApplication.DataAccess.Data
                         ListPrice = 135,
                         Price = 125,
                         Price50 = 120,
-                        Price100 = 115
+                        Price100 = 115,
+                        CategoryId = 2
                     },
                     new Product
                     {
@@ -116,7 +124,8 @@ namespace WebApplication.DataAccess.Data
                         ListPrice = 145,
                         Price = 135,
                         Price50 = 130,
-                        Price100 = 125
+                        Price100 = 125,
+                        CategoryId = 2
                     },
                     new Product
                     {
@@ -128,7 +137,8 @@ namespace WebApplication.DataAccess.Data
                         ListPrice = 110,
                         Price = 100,
                         Price50 = 95,
-                        Price100 = 90
+                        Price100 = 90,
+                        CategoryId = 3
                     },
                     new Product
                     {
@@ -140,7 +150,8 @@ namespace WebApplication.DataAccess.Data
                         ListPrice = 130,
                         Price = 120,
                         Price50 = 115,
-                        Price100 = 110
+                        Price100 = 110,
+                        CategoryId = 2
                     }
                 );
         }

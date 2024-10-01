@@ -51,7 +51,7 @@ namespace WebApplication1.Areas.Admin.Controllers
             //Category? categoryFromDb = _db.Categories.Find(id);
 
             //OPTIMAL FOR MOST CASE
-            Category? categoryFromDb = _unitOfWork.Category.Get(u => id == u.Id);
+            Category? categoryFromDb = _unitOfWork.Category.Get(u => id == u.CategoryId);
 
             // USE THIS WHEN LOTS OF FILTERING IS NEEDED
             //Category? categoryFromDb2 = _db.Categories.Where(u => u.Id == id).FirstOrDefault();
@@ -86,7 +86,7 @@ namespace WebApplication1.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            Category? categoryFromDb = _unitOfWork.Category.Get(u => id == u.Id);
+            Category? categoryFromDb = _unitOfWork.Category.Get(u => id == u.CategoryId);
 
             if (categoryFromDb == null)
             {
@@ -98,7 +98,7 @@ namespace WebApplication1.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? obj = _unitOfWork.Category.Get(u => id == u.Id);
+            Category? obj = _unitOfWork.Category.Get(u => id == u.CategoryId);
             if (obj == null)
             {
                 return NotFound();

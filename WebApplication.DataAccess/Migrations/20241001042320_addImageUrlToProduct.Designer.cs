@@ -2,17 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication.DataAccess.Data;
 
 #nullable disable
 
-namespace WebApplication1.Data.Migrations
+namespace WebApplication.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241001042320_addImageUrlToProduct")]
+    partial class addImageUrlToProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,11 +26,11 @@ namespace WebApplication1.Data.Migrations
 
             modelBuilder.Entity("WebApplication.Models.Models.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
@@ -37,28 +40,34 @@ namespace WebApplication1.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.HasKey("Id");
+                    b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            CategoryId = 1,
                             DisplayOrder = 1,
                             Name = "Action"
                         },
                         new
                         {
-                            Id = 2,
+                            CategoryId = 2,
                             DisplayOrder = 2,
                             Name = "Scifi"
                         },
                         new
                         {
-                            Id = 3,
+                            CategoryId = 3,
                             DisplayOrder = 3,
                             Name = "History"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            DisplayOrder = 4,
+                            Name = "Horror"
                         });
                 });
 
@@ -74,11 +83,18 @@ namespace WebApplication1.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -100,6 +116,8 @@ namespace WebApplication1.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
 
                     b.HasData(
@@ -107,8 +125,10 @@ namespace WebApplication1.Data.Migrations
                         {
                             Id = 1,
                             Author = "Billy Spark",
+                            CategoryId = 1,
                             Description = "Praesent vitae sodales libero.",
                             ISBN = "SWD9999001",
+                            ImageUrl = "",
                             ListPrice = 99.0,
                             Price = 90.0,
                             Price100 = 80.0,
@@ -119,8 +139,10 @@ namespace WebApplication1.Data.Migrations
                         {
                             Id = 2,
                             Author = "Nancy Weaver",
+                            CategoryId = 1,
                             Description = "Curabitur aliquet quam id dui posuere blandit.",
                             ISBN = "SWD9999002",
+                            ImageUrl = "",
                             ListPrice = 105.0,
                             Price = 95.0,
                             Price100 = 85.0,
@@ -131,8 +153,10 @@ namespace WebApplication1.Data.Migrations
                         {
                             Id = 3,
                             Author = "George R. R. Brown",
+                            CategoryId = 1,
                             Description = "Sed porttitor lectus nibh.",
                             ISBN = "SWD9999003",
+                            ImageUrl = "",
                             ListPrice = 120.0,
                             Price = 110.0,
                             Price100 = 100.0,
@@ -143,8 +167,10 @@ namespace WebApplication1.Data.Migrations
                         {
                             Id = 4,
                             Author = "Diana Prince",
+                            CategoryId = 2,
                             Description = "Vivamus magna justo, lacinia eget consectetur sed.",
                             ISBN = "SWD9999004",
+                            ImageUrl = "",
                             ListPrice = 115.0,
                             Price = 105.0,
                             Price100 = 95.0,
@@ -155,8 +181,10 @@ namespace WebApplication1.Data.Migrations
                         {
                             Id = 5,
                             Author = "Mark Twain",
+                            CategoryId = 4,
                             Description = "Nulla porttitor accumsan tincidunt.",
                             ISBN = "SWD9999005",
+                            ImageUrl = "",
                             ListPrice = 98.0,
                             Price = 88.0,
                             Price100 = 78.0,
@@ -167,8 +195,10 @@ namespace WebApplication1.Data.Migrations
                         {
                             Id = 6,
                             Author = "Jane Austen",
+                            CategoryId = 4,
                             Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                             ISBN = "SWD9999006",
+                            ImageUrl = "",
                             ListPrice = 125.0,
                             Price = 115.0,
                             Price100 = 105.0,
@@ -179,8 +209,10 @@ namespace WebApplication1.Data.Migrations
                         {
                             Id = 7,
                             Author = "H.P. Lovecraft",
+                            CategoryId = 2,
                             Description = "Vestibulum ac diam sit amet quam vehicula elementum.",
                             ISBN = "SWD9999007",
+                            ImageUrl = "",
                             ListPrice = 135.0,
                             Price = 125.0,
                             Price100 = 115.0,
@@ -191,8 +223,10 @@ namespace WebApplication1.Data.Migrations
                         {
                             Id = 8,
                             Author = "Isaac Asimov",
+                            CategoryId = 2,
                             Description = "Donec sollicitudin molestie malesuada.",
                             ISBN = "SWD9999008",
+                            ImageUrl = "",
                             ListPrice = 145.0,
                             Price = 135.0,
                             Price100 = 125.0,
@@ -203,8 +237,10 @@ namespace WebApplication1.Data.Migrations
                         {
                             Id = 9,
                             Author = "Stephen King",
+                            CategoryId = 3,
                             Description = "Vivamus suscipit tortor eget felis porttitor volutpat.",
                             ISBN = "SWD9999009",
+                            ImageUrl = "",
                             ListPrice = 110.0,
                             Price = 100.0,
                             Price100 = 90.0,
@@ -215,14 +251,27 @@ namespace WebApplication1.Data.Migrations
                         {
                             Id = 10,
                             Author = "J.K. Rowling",
+                            CategoryId = 2,
                             Description = "Pellentesque in ipsum id orci porta dapibus.",
                             ISBN = "SWD9999010",
+                            ImageUrl = "",
                             ListPrice = 130.0,
                             Price = 120.0,
                             Price100 = 110.0,
                             Price50 = 115.0,
                             Title = "Winds of Fate"
                         });
+                });
+
+            modelBuilder.Entity("WebApplication.Models.Models.Product", b =>
+                {
+                    b.HasOne("WebApplication.Models.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

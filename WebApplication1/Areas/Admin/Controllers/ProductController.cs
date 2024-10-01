@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApplication.DataAccess.Repository.IRepository;
 using WebApplication.Models.Models;
 
@@ -15,11 +16,28 @@ namespace WebApplication1.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Product> objProductList = _unitOfWork.Product.GetAll().OrderBy(u => u.ListPrice).ToList();
+            //projection in EFCore
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.CategoryId.ToString()
+            });
             return View(objProductList);
         }
 
         public IActionResult Create()
         {
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.CategoryId.ToString()
+            });
+
+            //demonstration purposes of viewdata vs viewbag
+            ViewBag.CategoryList = CategoryList;
+            ViewData["CategoryList"] = CategoryList;
+
+
             return View();
         }
 
