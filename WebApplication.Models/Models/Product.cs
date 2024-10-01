@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace WebApplication.Models.Models
 {
@@ -44,8 +45,10 @@ namespace WebApplication.Models.Models
         //foreign key to category table
         public int CategoryId { get; set; }
         //navigational prop to category table
-        //[ForeignKey("CategoryId")]
+        [ForeignKey("CategoryId")]
+        [ValidateNever]
         public Category Category { get; set; }
+        [ValidateNever]
         public string ImageUrl { get; set; } = "";
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApplication.DataAccess.Repository.IRepository;
 using WebApplication.Models.Models;
+using WebApplication.Models.ViewModels;
 
 namespace WebApplication1.Areas.Admin.Controllers
 {
@@ -27,22 +28,27 @@ namespace WebApplication1.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
-            {
-                Text = u.Name,
-                Value = u.CategoryId.ToString()
-            });
+            //IEnumerable<SelectListItem> CategoryList;
 
             //demonstration purposes of viewdata vs viewbag
-            ViewBag.CategoryList = CategoryList;
-            ViewData["CategoryList"] = CategoryList;
+            //ViewBag.CategoryList = CategoryList;
+            //ViewData["CategoryList"] = CategoryList;
 
+            ProductVM productVM = new()
+            {
+                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.CategoryId.ToString()
+                }),
+                Product = new Product()
+            };
 
-            return View();
+            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult Create(Product obj)
+        public IActionResult Create(ProductVM productVM)
         {
             //if(obj.Name == obj.DisplayOrder.ToString())
             //{
@@ -50,12 +56,21 @@ namespace WebApplication1.Areas.Admin.Controllers
             //}
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(obj);
+                _unitOfWork.Product.Add(productVM.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product created successfully";
                 return RedirectToAction(nameof(Index), nameof(Product));
+            } else
+            {
+                productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.CategoryId.ToString()
+                });
+                        
+                return View(productVM.CategoryList);
             }
-            return View();
+            
         }
 
         public IActionResult Edit(int? id)

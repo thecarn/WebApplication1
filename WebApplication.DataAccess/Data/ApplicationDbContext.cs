@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApplication.Models.Models;
 
+
 namespace WebApplication.DataAccess.Data
 {
     public class ApplicationDbContext : DbContext
