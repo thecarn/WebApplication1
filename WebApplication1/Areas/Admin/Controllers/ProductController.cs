@@ -10,13 +10,16 @@ namespace WebApplication1.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        //allows us to access the wwwroot folder
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
-            List<Product> objProductList = _unitOfWork.Product.GetAll().OrderBy(u => u.ListPrice).ToList();
+            List<Product> objProductList = _unitOfWork.Product.GetAll(includeProperties:"Category").OrderBy(u => u.ListPrice).ToList();
             //projection in EFCore
             IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
             {
@@ -26,7 +29,7 @@ namespace WebApplication1.Areas.Admin.Controllers
             return View(objProductList);
         }
 
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
             //IEnumerable<SelectListItem> CategoryList;
 
@@ -43,12 +46,19 @@ namespace WebApplication1.Areas.Admin.Controllers
                 }),
                 Product = new Product()
             };
-
-            return View(productVM);
+            if(id==null || id == 0)
+            {
+                return View(productVM);
+            } else
+            {
+                //update
+                productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
+                return View(productVM);
+            }
         }
 
         [HttpPost]
-        public IActionResult Create(ProductVM productVM)
+        public IActionResult UpSert(ProductVM productVM, IFormFile? file)
         {
             //if(obj.Name == obj.DisplayOrder.ToString())
             //{
@@ -56,12 +66,46 @@ namespace WebApplication1.Areas.Admin.Controllers
             //}
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(productVM.Product);
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"images\product");
+
+                    if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+                    {
+                        //delete the old image
+                        var oldImagePath = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
+
+                        if(System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    productVM.Product.ImageUrl = @"\images\product\" + fileName;
+                }
+
+                if(productVM.Product.Id == 0)
+                {
+                    //add
+                    _unitOfWork.Product.Add(productVM.Product);
+                } else
+                {
+                    //update
+                    _unitOfWork.Product.Update(productVM.Product);
+                }
+                
                 _unitOfWork.Save();
                 TempData["success"] = "Product created successfully";
                 return RedirectToAction(nameof(Index), nameof(Product));
             } else
             {
+                //display dropdown elements in case of crash/refresh
                 productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
