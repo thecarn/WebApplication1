@@ -5,68 +5,56 @@
             <h2 class="text-primary">
                 Category List
             </h2>
+            <div class="col-6" text-end>
+                <a asp-controller="Product" asp-action="UpSert" class="btn btn-primary">
+                    Create New Category
+                </a>
+            </div>
         </div>
-        <div class="col-6" text-end>
-            <a asp-controller="Product" asp-action="UpSert" class="btn btn-primary">
-            Create New Category
-            </a>
-        </div>
+
+        <table id="tblData" class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>ISBN</th>
+                    <th>Price</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+        </table>
+
     </div>
 </div>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>
-                Book Id
-            </th>
-            <th>
-                Book Title
-            </th>
-            <th>
-                Book Summary
-            </th>
-            <th>
-                ISBN
-            </th>
-            <th>
-                Book Author
-            </th>
-            <th>
-                Book Price
-            </th>
-            <th>
-                Action
-            </th>
-        </tr>
-    </thead>
-    <tbody>
+
+
+@section Scripts {
+    <script src="~/js/product.js"></script>
+}
+
+@*
         @foreach(var obj in Model)
         {
-            <tr>
-                <td>@obj.Id</td>
-                <td>@obj.Title</td>
-                <td>@obj.Description</td>
-                <td>@obj.ISBN</td>
-                <td>@obj.Author</td>
-                <td>@obj.ListPrice</td>
-                <td>
-                    <div class="w-75 btn-group" role="group">
-                        <a asp-controller="Product" asp-action="UpSert" asp-route-id="@obj.Id" class="btn btn-edit mx-2">
-                            Edit
-                        </a>
-                        <a asp-controller="Product" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-delete mx-2">
-                            Delete
-                        </a>
-                    </div>
-                </td>
-            
-            </tr>
-
-            
+        <tr>
+        <td>@obj.Id</td>
+        <td>@obj.Title</td>
+        <td>@obj.Description</td>
+        <td>@obj.ISBN</td>
+        <td>@obj.Author</td>
+        <td>@obj.ListPrice</td>
+        <td>@obj.Category.Name</td>
+        <td>
+        <div class="w-75 btn-group" role="group">
+        <a asp-controller="Product" asp-action="UpSert" asp-route-id="@obj.Id" class="btn btn-edit mx-2">
+        Edit
+        </a>
+        <a asp-controller="Product" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-delete mx-2">
+        Delete
+        </a>
+        </div>
+        </td>
+        </tr>
         }
 
-    </tbody>
-
-
-</table>
+*@
