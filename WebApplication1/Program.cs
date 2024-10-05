@@ -86,6 +86,7 @@ builder.Services.AddControllersWithViews();
 //if we dont load our repo service into the DI container, then we will be presented with an exception
 //invalidoperationexception, unable to resolve service for type webapplication.dataccess.repoisitory.irepository.icategoryrepository
 //while attempting to activate webapplication.cointrollers.categorycontreoller
+builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
@@ -109,6 +110,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthorization();
 app.UseAuthorization();
 
 app.MapControllerRoute(
