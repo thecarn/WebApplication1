@@ -6,6 +6,7 @@ using WebApplication.DataAccess.Repository.IRepository;
 using WebApplication.DataAccess.Repository;
 using WebApplication.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 /*
  
 transient is good if you need something new or timestamped
@@ -91,6 +92,14 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(100);
+    options.Cookie.HttpOnly = true; //the cookie is not accessible via javascript
+    options.Cookie.IsEssential = true;
+});
+
 //if we dont load our repo service into the DI container, then we will be presented with an exception
 //invalidoperationexception, unable to resolve service for type webapplication.dataccess.repoisitory.irepository.icategoryrepository
 //while attempting to activate webapplication.cointrollers.categorycontreoller
@@ -98,6 +107,18 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+//COOKIE SECURITY
+//ensures that cookies cant be stolen over unsecured network
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.Secure = CookieSecurePolicy.Always;
+});
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+{
+    options.Cookie.SameSite = SameSiteMode.Strict;//prevents cross-site requests from sending the cookie
+});
 
 var app = builder.Build();
 
@@ -121,7 +142,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 app.UseAuthorization();
-
+app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
