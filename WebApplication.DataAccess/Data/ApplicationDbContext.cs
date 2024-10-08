@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WebApplication.Models.Models;
 
 
 namespace WebApplication.DataAccess.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :base(options)
         {
@@ -14,8 +16,13 @@ namespace WebApplication.DataAccess.Data
         public DbSet<Category> Categories {  get; set; }
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //NEED THIS IF USING ONMODELCREATING AND USING IDENTITY
+            //keys of identity tables are mapped in the onModelCreating method
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Category>().HasData(
                 new Category { CategoryId = 1, Name = "Action", DisplayOrder = 1},
                 new Category { CategoryId = 2, Name = "Scifi", DisplayOrder = 2 },
