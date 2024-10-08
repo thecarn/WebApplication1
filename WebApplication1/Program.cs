@@ -4,6 +4,8 @@ using WebApplication.DataAccess.Data;
 using Microsoft.AspNetCore.Builder;
 using WebApplication.DataAccess.Repository.IRepository;
 using WebApplication.DataAccess.Repository;
+using WebApplication.Utility;
+using Microsoft.AspNetCore.Identity.UI.Services;
 /*
  
 transient is good if you need something new or timestamped
@@ -79,16 +81,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString, b => b.MigrationsAssembly("WebApplication.DataAccess")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddControllersWithViews();
 
 //if we dont load our repo service into the DI container, then we will be presented with an exception
 //invalidoperationexception, unable to resolve service for type webapplication.dataccess.repoisitory.irepository.icategoryrepository
 //while attempting to activate webapplication.cointrollers.categorycontreoller
+
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
