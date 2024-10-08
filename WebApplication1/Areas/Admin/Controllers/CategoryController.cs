@@ -3,10 +3,13 @@ using WebApplication.DataAccess.Data;
 using WebApplication.Models.Models;
 using WebApplication.DataAccess.Repository.IRepository;
 using WebApplication.DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
+using WebApplication.Utility;
 
 namespace WebApplication1.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
