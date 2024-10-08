@@ -84,6 +84,13 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 builder.Services.AddControllersWithViews();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
+
 //if we dont load our repo service into the DI container, then we will be presented with an exception
 //invalidoperationexception, unable to resolve service for type webapplication.dataccess.repoisitory.irepository.icategoryrepository
 //while attempting to activate webapplication.cointrollers.categorycontreoller
